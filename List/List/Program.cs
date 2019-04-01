@@ -42,7 +42,7 @@ class Program
                     Display(Dict);
                     break;
                 case 3:
-                    //Dict = SortDictionary(Dict);
+                    Dict = SortDictionary(Dict);
                     break;
                 case 0:
                     return 0;
@@ -58,86 +58,55 @@ class Program
         }
     }
 
-    static void Display(Dictionary<int, List<int>> dict)
-    {
-        Console.WriteLine("List: ");
-
-        List<int> MainListElem = new List<int>(dict.Keys);//keys to list, basically main list elements
-        
-        char MainItem = 'A';
-
-        foreach (int value in MainListElem)
-        {
-            Console.WriteLine("Item " + MainItem + " " + value);
-            char SubItem = 'a';
-            dict.TryGetValue(value, out List<int> sublist);
-
-            foreach (int val in sublist)
-            {
-                Console.WriteLine(" Subitem " + MainItem + SubItem + " " + val);
-                SubItem++;
-            }
-            MainItem++;
-        }
-    }
-
     static Dictionary<int, List<int>> GenerateDictionary()
     {
         var dict = new Dictionary<int, List<int>>();
         var rand = new Random();
-        
-        int len = Input("Enter main list lenght(int): ");//lenght of main list
+        const int MainMax = 1001;//Max amount of main list elements
+        int len;
+        int main;
+
+        do
+        {
+            len = Input("Enter main list lenght(int, Max = 1000 ): ");//lenght of main list\
+            Console.Clear();
+        } while (len >= MainMax);
         
         for (int i = 0; i < len; i++)
         {
-            int main = rand.Next(1, 999);//values of MainList
+            do
+            {
+                main = rand.Next(1, MainMax);//generate values of MainList
+            }while (dict.ContainsKey(main));
+
             var SubList = new List<int>();
-            int sub = rand.Next(10);//amount of SubList elements
+            int sub = rand.Next(15);//generate amount of SubList elements
 
             for (int j = 0; j < sub; j++)
-                SubList.Add(rand.Next(1, 999));//values of SubList
+                SubList.Add(rand.Next(1, 1000));//generate values of SubList
 
             dict.Add(main, SubList);
         }
         return dict;
     }
 
-    static int SumList(List<int> list)
+    static void Display(Dictionary<int, List<int>> dict)
     {
-        
-        return 0;
-    }
+        Console.WriteLine("List: ");
 
-    /*static Dictionary<int, List<int>> SortDictionary(Dictionary<int, List<int>> dict)
-    {
-        var ListToSort = new List<int>();
+        List<int> MainListElem = new List<int>(dict.Keys);//keys to list, basically main list elements
 
-        var newDict = new Dictionary<int, List<int>>();
-
-        Display(dict);
-
-        var input = Console.ReadLine();
-
-        Console.WriteLine("\nWhatlist You wan to sort?");
-        Console.WriteLine("If you want to sort MainList (Type \"m\")\n" +
-                          "If you want to sort sublist enter main list element");
-
-
-
-        if(input == "m")
+        foreach (int value in MainListElem)
         {
-            int cou = dict.Count;
-            List<int> MainListElem = new List<int>(dict.Keys);
-            MainListElem.Sort();
-            for(int i = 0; i < cou; i++)
+            Console.WriteLine("Item " + value);
+            dict.TryGetValue(value, out List<int> sublist);
+
+            foreach (int val in sublist)
             {
-                newDict.Add(MainListElem[i], );
+                Console.WriteLine(" Subitem " + val);
             }
         }
-
-
-        return newDict;
-    }*/
+    }
 
     static int Input(string msg)
     {
@@ -155,6 +124,59 @@ class Program
         Console.WriteLine();
 
         return intinp;
+    }
+
+    static Dictionary<int, List<int>> SortDictionary(Dictionary<int, List<int>> dict)
+    {
+        var newDict = new Dictionary<int, List<int>>();
+
+        Display(dict);
+
+        Console.WriteLine("\nWhatlist You wan to sort?\n" +
+                          "If you want to sort MainList type \"m\"\n" +
+                          "If you want to sort sublist type \"s\"");
+        string input1 = Console.ReadLine();
+
+        while(true)
+        {
+            if (input1 == "m" || input1 == "s")
+                break;
+
+            Console.WriteLine("Wrong input! Please try again.\n\n" +
+                              "Whatlist You wan to sort?\n" +
+                              "If you want to sort MainList type \"m\"\n" +
+                              "If you want to sort sublist type \"s\"");
+            input1 = Console.ReadLine();
+            Console.Clear();
+        }
+        
+        if(input1 == "m")
+        {
+            int cou = dict.Count;
+            List<int> MainListElem = new List<int>(dict.Keys);
+            MainListElem.Sort();
+            for(int i = 0; i < cou; i++)
+            {
+                newDict.Add(MainListElem[i], dict[MainListElem[i]]);
+            }
+
+            return newDict;
+        }
+
+        if(input1 == "s")
+        {
+            int input2 = Input("Input main list value for sublist you want to sort: ");
+            dict[input2].Sort();
+            return dict;
+        }
+
+        return dict;
+    }
+
+    static int SumList(List<int> list)
+    {
+        
+        return 0;
     }
 }
 
