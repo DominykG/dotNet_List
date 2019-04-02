@@ -9,9 +9,6 @@ class Program
         
         Menu();
 
-        //Dictionary<int, List<int>> Dict = GenerateDictionary();
-
-        //Display(Dict);
         Console.Write("\nPress eny key to continue...");
         Console.ReadKey(true); 
     }
@@ -28,9 +25,7 @@ class Program
             Console.WriteLine("4. Sum chosen list elements");
             Console.WriteLine("0. Exit");
                        
-            int choice = Input("Enter choice(int): ");
-
-            //int cou = Dict.Count;                   
+            int choice = Input("Enter choice(int): ");               
 
             switch (choice)
             {
@@ -45,6 +40,7 @@ class Program
                     Dict = SortDictionary(Dict);
                     break;
                 case 0:
+                    Dict.Clear();
                     return 0;
 
                 default:
@@ -116,7 +112,6 @@ class Program
 
         while (!int.TryParse(stringinp, out intinp))
         {
-            Console.Clear();
             Console.Write(msg);
             stringinp = Console.ReadLine();
         }
@@ -128,33 +123,30 @@ class Program
 
     static Dictionary<int, List<int>> SortDictionary(Dictionary<int, List<int>> dict)
     {
-        var newDict = new Dictionary<int, List<int>>();
+        List<int> AcceptableInputs = new List<int>{-2, -1, 0, 1, 2};
 
         Display(dict);
-
-        Console.WriteLine("\nWhatlist You wan to sort?\n" +
-                          "If you want to sort MainList type \"m\"\n" +
-                          "If you want to sort sublist type \"s\"");
-        string input1 = Console.ReadLine();
-
-        while(true)
-        {
-            if (input1 == "m" || input1 == "s")
-                break;
-
-            Console.WriteLine("Wrong input! Please try again.\n\n" +
-                              "Whatlist You wan to sort?\n" +
-                              "If you want to sort MainList type \"m\"\n" +
-                              "If you want to sort sublist type \"s\"");
-            input1 = Console.ReadLine();
-            Console.Clear();
-        }
         
-        if(input1 == "m")
+        int WhatToSort;
+        do
         {
-            int cou = dict.Count;
+            WhatToSort = Input("\nWhatlist You wan to sort?\n" +
+                          "If you want to sort MainList type \"1\" ascending, \"-1\" descending\n" +
+                          "If you want to sort sublist type \"2\" ascending, \"-2\" descending\n" +
+                          "If you want to cancel sorting type \"0\"");
+        } while (!AcceptableInputs.Contains(WhatToSort));
+
+        if (WhatToSort == 1 || WhatToSort == -1)
+        {
+            var newDict = new Dictionary<int, List<int>>();
             List<int> MainListElem = new List<int>(dict.Keys);
+            int cou = dict.Count;
+
             MainListElem.Sort();
+
+            if (WhatToSort == -1)
+                MainListElem.Reverse();
+
             for(int i = 0; i < cou; i++)
             {
                 newDict.Add(MainListElem[i], dict[MainListElem[i]]);
@@ -163,14 +155,27 @@ class Program
             return newDict;
         }
 
-        if(input1 == "s")
+        if(WhatToSort == 2 || WhatToSort == -2)
         {
-            int input2 = Input("Input main list value for sublist you want to sort: ");
-            dict[input2].Sort();
+            int ChooseSubList;
+
+            do
+            {
+                ChooseSubList = Input("Input main list value for sublist you want to sort: ");
+            } while (!dict.ContainsKey(ChooseSubList));
+
+            dict[ChooseSubList].Sort();
+
+            if(WhatToSort == -2)
+                dict[ChooseSubList].Reverse();
+
             return dict;
         }
 
-        return dict;
+        else
+        {
+            return dict;
+        }
     }
 
     static int SumList(List<int> list)
