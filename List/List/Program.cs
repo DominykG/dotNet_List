@@ -61,21 +61,15 @@ class Program
     {
         var dict = new Dictionary<int, List<int>>();
         var rand = new Random();
-        const int MainMax = 1001;//Max amount of main list elements
-        int len;
+        const int MainMax = 10;//Max amount of main list elements
+        int len = rand.Next(1, MainMax);//length
         int main;
-
-        do
-        {
-            len = Input("Enter main list lenght(int, Max = 1000 ): ");//lenght of main list\
-            Console.Clear();
-        } while (len >= MainMax);
         
         for (int i = 0; i < len; i++)
         {
             do
             {
-                main = rand.Next(1, MainMax);//generate values of MainList
+                main = rand.Next(1, MainMax * 10);//generate values of MainList
             }while (dict.ContainsKey(main));
 
             var SubList = new List<int>();
