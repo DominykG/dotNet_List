@@ -39,6 +39,9 @@ class Program
                 case 3:
                     Dict = SortDictionary(Dict);
                     break;
+                case 4:
+                    SumList(Dict);
+                    break;
                 case 0:
                     Dict.Clear();
                     return 0;
@@ -133,7 +136,7 @@ class Program
             WhatToSort = Input("\nWhatlist You wan to sort?\n" +
                           "If you want to sort MainList type \"1\" ascending, \"-1\" descending\n" +
                           "If you want to sort sublist type \"2\" ascending, \"-2\" descending\n" +
-                          "If you want to cancel sorting type \"0\"");
+                          "If you want to cancel type \"0\"");
         } while (!AcceptableInputs.Contains(WhatToSort));
 
         if (WhatToSort == 1 || WhatToSort == -1)
@@ -178,10 +181,51 @@ class Program
         }
     }
 
-    static int SumList(List<int> list)
+    static void SumList(Dictionary<int, List<int>> dict)
     {
-        
-        return 0;
+        List<int> AcceptableInputs = new List<int> { 0, 1, 2 };
+
+        Display(dict);
+
+        int WhatToSum;
+        do
+        {
+            WhatToSum = Input("\nWhatlist You wan to sort?\n" +
+                          "If you want to sum MainList type \"1\"\n" +
+                          "If you want to sum sublist type \"2\"\n" +
+                          "If you want to cancel type \"0\"");
+        } while (!AcceptableInputs.Contains(WhatToSum));
+
+        if (WhatToSum == 1)
+        {
+            List<int> MainListElem = new List<int>(dict.Keys);
+            int mainSum = 0;
+
+            foreach(var elem in MainListElem)
+            {
+                mainSum += elem;
+            }
+
+            Console.WriteLine("Sum of MainList is " + mainSum);
+        }
+
+        if (WhatToSum == 2)
+        {
+            int ChooseSubList;
+            int subSum = 0;
+
+            do
+            {
+                ChooseSubList = Input("Input main list value for sublist you want to sort: ");
+            } while (!dict.ContainsKey(ChooseSubList));
+
+            foreach (var elem in dict[ChooseSubList])
+            {
+                subSum += elem;
+            }
+
+            Console.WriteLine("Sum of SubList is " + subSum);
+        }
     }
 }
 
