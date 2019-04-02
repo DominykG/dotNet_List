@@ -218,7 +218,7 @@ class Program
                 subSum += elem;
             }
 
-            Console.WriteLine("Sum of SubList is " + subSum);
+            Console.WriteLine("Sum of Item " + ChooseSubList + " SubItems is " + subSum);
         }
     }
 }
