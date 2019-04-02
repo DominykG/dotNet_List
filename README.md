@@ -1,6 +1,6 @@
 # dotNet_List
 
-This is .NET Core project so it can be built Windows, Mac and Linux.
+This is .NET Core project so it can be built on Windows, Mac and Linux.
 
 Built project .exe for windows can be found in ...\dotNet_List\List\List\bin\Release\netcoreapp2.0\win-x64
 
